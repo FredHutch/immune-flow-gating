@@ -6,6 +6,7 @@
 # (note that this is actually being staged to a temporary
 # directory in the working folder of a Nextflow task)
 
+source("bin/data.R")
 source("bin/custom.R")
 source("bin/fetch.R")
 source("bin/gate.R")
