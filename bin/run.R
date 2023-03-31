@@ -1,4 +1,7 @@
 #!/usr/bin/env Rscript
+library(parallel)
+library(ImmPortR)
+library(flowCore)
 
 # Wrapper function for the primary entrypoint
 

@@ -89,6 +89,7 @@ summarize_study <- function(study, input_dir, remove_dups = TRUE, standardize_ma
   files$cytometerConfigName <- sapply(headers, function(x) x[[1]]["CYTOMETER CONFIG NAME"])
   files$cytometerConfigCreateDate <- sapply(headers, function(x) x[[1]]["CYTOMETER CONFIG CREATE DATE"])
 
+  print("Getting markers for the study")
   markers <- get_markers(study)
 
   panels <- sapply(headers, function(x) {
