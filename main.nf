@@ -4,15 +4,17 @@
 nextflow.enable.dsl=2
 
 process immune_flow_gating {
+    publishDir "${params.outdir}", mode: 'copy', overwrite: true
     input:
     path "fcs/"
     path "bin/"
 
     output:
-    path "*"
+    path "*", type: 'file'
 
-"""#!/usr/bin/env Rscript
-source("bin/run.R")
+"""#!/bin/bash
+set -e
+run.R 2>&1 | tee immune_flow_gating.log
 """
 
 }
@@ -21,8 +23,12 @@ workflow {
 
     if(params.fcs == false){
         log.info("Must specify 'fcs' parameter")
-        exit 1
     }
+
+    if(params.outdir == false){
+        log.info("Must specify 'outdir' parameter")
+    }
+    if(params.outdir == false || params.fcs == false){ exit 1 }
 
     // Make a channel with all of the R files from bin/
     Channel

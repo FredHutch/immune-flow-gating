@@ -13,9 +13,6 @@
 #' @importFrom parallel mclapply
 #' @export
 process_study <- function(study, input_dir, debug_dir = NULL) {
-  if (get_commit_hash() == "") {
-    stop("Please install from GitHub: `remotes::install_github('RGLab/HIPCCyto')`")
-  }
 
   # summarize files
   files <- summarize_study(study, input_dir, debug_dir = debug_dir)
@@ -30,9 +27,17 @@ process_study <- function(study, input_dir, debug_dir = NULL) {
 #' @importFrom flowCore read.FCSheader
 #' @importFrom gtools mixedsort
 summarize_study <- function(study, input_dir, remove_dups = TRUE, standardize_markernames = TRUE, debug_dir = NULL) {
-  files <- query_filePath(study)
+  # Set up a data.frame summarizing the files in the input_dir
+  files <- data.frame(
+    fileDetail = "Flow cytometry result",
+    fileName = list.files(path = input_dir),
+    fileInfoId = list.files(path = input_dir),
+    study = study
+  )
+
   files <- files[files$fileDetail == "Flow cytometry result", ]
   files <- files[grepl(".fcs$", files$fileName), ]
+
   files$filePathId <- NULL
   files$sourceAccession <- NULL
   files$filePath <- file.path(input_dir, files$fileName)
