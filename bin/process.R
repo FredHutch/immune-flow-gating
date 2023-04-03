@@ -1,3 +1,5 @@
+library(gtools)
+
 #' Pre-process a ImmPort study with flow cytometry data
 #'
 #' @param study A character. ImmPort study accession.
@@ -92,6 +94,7 @@ summarize_study <- function(study, input_dir, remove_dups = TRUE, standardize_ma
   print("Getting markers for the study")
   markers <- get_markers(study)
 
+  print("Getting panels for the study")
   panels <- sapply(headers, function(x) {
     header <- x[[1]]
     par <- as.integer(header["$PAR"])
@@ -117,7 +120,7 @@ summarize_study <- function(study, input_dir, remove_dups = TRUE, standardize_ma
     if (length(PNS) == 0) {
       ""
     } else {
-      paste(mixedsort(paste0(PNS, " (", PNN, ")")), collapse = "; ")
+      paste(gtools::mixedsort(paste0(PNS, " (", PNN, ")")), collapse = "; ")
     }
   })
 
@@ -134,7 +137,7 @@ summarize_study <- function(study, input_dir, remove_dups = TRUE, standardize_ma
       paste(gsub(" \\(.+\\)$", "", x), collapse = " | ")
     }
   })
-  catf(paste(mixedsort(panels_clean), collapse = "\n"))
+  catf(paste(gtools::mixedsort(panels_clean), collapse = "\n"))
 
   save_debug(files, "summarize_study", debug_dir)
 
