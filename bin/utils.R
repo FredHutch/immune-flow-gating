@@ -28,7 +28,7 @@ get_parent <- function(gs) {
 }
 
 get_markers <- function(study, modify = TRUE) {
-  headers <- ImmPortR:::query(sprintf("fcs_header_marker/%s", study))
+  headers <- ImmPortR:::query("fcs_header_marker/SDY1773")
 
   pns <- unique(headers[, c("pnsPreferred", "pnsReported")])
   pns <- pns[!pns$pnsReported %in% headers$pnnReported, ]
