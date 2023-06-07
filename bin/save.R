@@ -16,7 +16,7 @@
 #' @importFrom ggplot2 ggsave facet_wrap facet_null aes_ aes
 #' @importFrom flowCore getChannelMarker
 #' @export
-save_gating_sets <- function(gsl, output_dir, qc = TRUE) {
+save_gating_sets <- function(gsl, output_dir, qc = FALSE) {
   gsl_path <- lapply(seq_len(length(gsl)), function(i) {
     catf(sprintf("Saving gating set #%s", i))
     gs <- gsl[[i]]
@@ -24,10 +24,7 @@ save_gating_sets <- function(gsl, output_dir, qc = TRUE) {
 
     path <- file.path(output_dir, gs_accession)
     gs_path <- file.path(path, "gs")
-    if (dir.exists(gs_path)) {
-      unlink(gs_path, recursive = TRUE)
-    }
-    dir.create(gs_path, showWarnings = FALSE, recursive = TRUE)
+    dir.create(path, showWarnings = FALSE, recursive = TRUE)
 
     catf(sprintf("gs_path = %s", gs_path))
     save_gs(gs, gs_path, overwrite = TRUE, backend_opt = "copy")

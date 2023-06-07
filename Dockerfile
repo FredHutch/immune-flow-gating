@@ -1,0 +1,10 @@
+FROM bioconductor/bioconductor_docker:latest
+RUN R -q -e 'BiocManager::install("flowCore")'
+RUN R -q -e 'BiocManager::install("flowWorkspace")'
+RUN R -q -e 'BiocManager::install("openCyto")'
+RUN R -q -e 'BiocManager::install("flowClust")'
+RUN R -q -e 'BiocManager::install("ggmisc")'
+RUN R -q -e 'BiocManager::install("jsonlite")'
+RUN R -q -e 'BiocManager::install("data.table")'
+RUN R -q -e 'BiocManager::install("gtools")'
+RUN R -q -e 'remotes::install_github("RGLab/cytoqc")'

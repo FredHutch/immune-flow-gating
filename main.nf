@@ -7,10 +7,11 @@ process immune_flow_gating {
     publishDir "${params.outdir}", mode: 'copy', overwrite: true
     input:
     path "fcs/"
+    path "samplesheet.csv"
     path "bin/"
 
     output:
-    path "*", type: 'file'
+    path "gs*", type: 'dir'
 
 """#!/bin/bash
 set -e
@@ -23,6 +24,10 @@ workflow {
 
     if(params.fcs == false){
         log.info("Must specify 'fcs' parameter")
+    }
+
+    if(params.samplesheet == false){
+        log.info("Must specify 'samplesheet' parameter")
     }
 
     if(params.outdir == false){
@@ -49,6 +54,7 @@ workflow {
 
     immune_flow_gating(
         fcs,
+        file("${params.samplesheet}", checkIfExists: true),
         rscripts
     )
 
