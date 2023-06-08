@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 process immune_flow_gating {
     publishDir "${params.outdir}", mode: 'copy', overwrite: true
+    container "${params.container}"
+
     input:
     path "fcs/"
     path "samplesheet.csv"
