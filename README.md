@@ -34,3 +34,12 @@ Behind the scenes, this is implemented by:
   2. Setting up an input for the primary process which places all of those files in `bin/` for the working directory;
   3. The primary entrypoint script (`run.R`) will use `source()` on all dependencies;
   4. Parameters will be mapped into the scripts using the [`env` input type](https://www.nextflow.io/docs/latest/process.html#input-type-env).
+
+## Channel Map
+
+The default mapping of channels for the required markers is:
+
+| alias | channels |
+| --- | --- |
+| APC-eFluor 780-A | APC-eFluor780-A |
+| eFluor 450-A | eFluor450-A |

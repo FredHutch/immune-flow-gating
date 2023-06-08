@@ -11,6 +11,7 @@ process immune_flow_gating {
     path "fcs/"
     path "samplesheet.csv"
     path "bin/"
+    path "channel_map.json"
 
     output:
     path "gs*", type: 'dir'
@@ -46,10 +47,14 @@ workflow {
         .toSortedList()
         .set { rscripts }
 
+    // Get the file with the channel mappings
+    channel_map = file(params.channel_map, checkIfExists: true)
+
     // Make a channel with all of the FCS files in the input
     Channel
         .fromPath(
-            "${params.fcs}".split(",").toList()
+            "${params.fcs}".split(",").toList(),
+            checkIfExists: true
         )
         .toSortedList()
         .set { fcs }
@@ -57,7 +62,8 @@ workflow {
     immune_flow_gating(
         fcs,
         file("${params.samplesheet}", checkIfExists: true),
-        rscripts
+        rscripts,
+        channel_map
     )
 
 }

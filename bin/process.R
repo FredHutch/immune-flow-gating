@@ -314,9 +314,7 @@ hipccyto_asinht_trans <- function(cofactor) {
 }
 
 get_channel_map <- function() {
-  map <- Sys.getenv("CHANNEL_MAP")
-  if (!is.null(map)) map <- jsonlite::fromJSON(map)
-  map
+  jsonlite::fromJSON("channel_map.json")
 }
 
 validate_samplesheet <- function(samplesheet) {
