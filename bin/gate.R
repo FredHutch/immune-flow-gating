@@ -191,10 +191,17 @@ compute_flowClusters <- function(gs) {
   catf("Computing for the optimal number of clusters (K) for each sample")
   cs <- gs_pop_get_data(gs, get_parent(gs))
 
-  flowClusters <- mclapply(sampleNames(cs), function(x) {
+  # Detect the number of cores available
+  ncores <- detect_cores()
+  catf(sprintf("Using %s cores", ncores))
+  options(mc.cores = ncores)
+
+  flowClusters <- lapply(sampleNames(cs), function(x) {
+    catf(sprintf("Processing %s", x))
     ex <- exprs(cs[[x, returnType = "cytoframe"]])[, c("FSC-A", "SSC-A")]
     flowclust(ex)
-  }, mc.cores = detect_cores())
+  })
+  catf("Done testing values of K")
   names(flowClusters) <- sampleNames(cs)
   flowClusters
 }
