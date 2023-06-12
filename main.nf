@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 process immune_flow_gating {
-    publishDir "${params.outdir}", mode: 'copy', overwrite: true
+    publishDir "${params.outdir}", mode: 'copy', overwrite: true, saveAs: { it.replaceAll(/.*\//, "") }
     container "${params.container}"
 
     input:
@@ -14,13 +14,50 @@ process immune_flow_gating {
     path "channel_map.json"
 
     output:
-    path "gs*", type: 'dir'
+    path "gs*/gs/*.h5", emit: 'h5'
+    path "gs*/gs/*.pb", emit: 'pb'
+    path "immune_flow_gating.log", emit: 'log'
 
 """#!/bin/bash
 set -e
 run.R 2>&1 | tee immune_flow_gating.log
 """
 
+}
+
+process extract_h5 {
+    publishDir "${params.outdir}", mode: 'copy', overwrite: true
+    container "${params.container}"
+
+    input:
+        path h5
+
+    output:
+        path "*.csv.gz"
+
+    """#!/usr/bin/env python3
+import h5py
+import pandas as pd
+
+# Read the file
+input_fp = "${h5}"
+print(f"Reading {input_fp}")
+dat = h5py.File(input_fp)
+
+# Build a DataFrame
+print("Building a DataFrame")
+df = pd.DataFrame(
+    dat['data'],
+    index=[i[0].decode() for i in dat['params']]
+).T
+print(f"Built a DataFrame with {df.shape[0]:,} rows and {df.shape[1]:,} columns")
+
+# Write to CSV
+output_fp = input_fp.replace(".h5", ".csv.gz")
+print(f"Writing to {output_fp}")
+df.to_csv(output_fp, index=None)
+print("Done")
+    """
 }
 
 workflow {
@@ -64,6 +101,13 @@ workflow {
         file("${params.samplesheet}", checkIfExists: true),
         rscripts,
         channel_map
+    )
+
+    extract_h5(
+        immune_flow_gating
+            .out
+            .h5
+            .flatten()
     )
 
 }
