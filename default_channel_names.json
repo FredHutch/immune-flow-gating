@@ -1,0 +1,12 @@
+{
+    "CCR7": "PerCP-Cy5-5-A",
+    "CD3": "Alexa Fluor 700-A",
+    "CD4": "APC-eFluor 780-A",
+    "CD8": "BV650-A",
+    "CD14": "APC-A",
+    "CD19": "PE-Cy7-A",
+    "CD25": "FITC-A",
+    "CD45RA": "eFluor 450-A",
+    "CD56": "PE-A",
+    "LD": "V500-A"
+}

@@ -27,7 +27,7 @@ run.R 2>&1 | tee immune_flow_gating.log
 
 process extract_h5 {
     publishDir "${params.outdir}", mode: 'copy', overwrite: true
-    container "${params.container}"
+    container "${params.container__python}"
 
     input:
         path h5
