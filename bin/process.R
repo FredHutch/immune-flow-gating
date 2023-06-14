@@ -30,6 +30,7 @@ summarize_study <- function(samplesheet) {
 
   # summarize files
   catf(sprintf("There are %s fcs files in this dataset", nrow(files)))
+  stopifnot(nrow(files) > 0)
 
   # read headers and summarize panels
   map <- get_channel_map()
@@ -95,6 +96,7 @@ summarize_study <- function(samplesheet) {
   # how many gating sets will be created
   # by panels, sample type, measurement technique, experiment accession
   catf(sprintf("There are %s panel(s)", length(ps)))
+  stopifnot(length(ps) > 0)
   panels_clean <- sapply(strsplit(ps, "; "), function(x) {
     if (length(x) == 0) {
       ""
