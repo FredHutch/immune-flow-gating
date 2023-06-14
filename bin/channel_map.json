@@ -1,0 +1,10 @@
+[
+    {
+        "alias":"APC-eFluor 780-A",
+        "channels":"APC-eFluor780-A"
+    },
+    {
+        "alias":"eFluor 450-A",
+        "channels":"eFluor450-A"
+    }
+]
