@@ -196,11 +196,11 @@ compute_flowClusters <- function(gs) {
   catf(sprintf("Using %s cores", ncores))
   options(mc.cores = ncores)
 
-  flowClusters <- mclapply(sampleNames(cs), function(x) {
+  flowClusters <- lapply(sampleNames(cs), function(x) {
     catf(sprintf("Processing %s", x))
     ex <- exprs(cs[[x, returnType = "cytoframe"]])[, c("FSC-A", "SSC-A")]
     flowclust(ex)
-  }, mc.cores=ncores)
+  })
   catf("Done testing values of K")
   names(flowClusters) <- sampleNames(cs)
   flowClusters
