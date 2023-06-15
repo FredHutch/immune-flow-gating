@@ -124,17 +124,27 @@ process_panel <- function(files) {
   cs <- create_cytoset(files$file_1)
 
   # merge metadata
+  catf("Merging metadata")
   cs <- merge_metadata(cs, files)
+  catf("Merging metadata - Done")
 
   # create a gating set
+  catf("Creating a gating set")
   gs <- create_gs(cs)
-
+  catf("Creating a gating set - Done")
+  
   # pre-process
+  catf("Applying compensation")
   gs <- compensate_gs(gs)
+  catf("Applying compensation - Done")
+  catf("Applying transformation")
   gs <- transform_gs(gs)
+  catf("Applying transformation - Done")
 
   # gate
+  catf("Applying gating")
   gate_gs(gs)
+  catf("Applying gating - Done")
 
   gs
 }

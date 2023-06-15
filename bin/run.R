@@ -13,6 +13,8 @@ source("bin/utils.R")
 
 gsl <- process_study()
 
+catf("Saving gating sets")
 save_gating_sets(gsl, ".")
+catf("Saving gating sets - Done")
 
 print("DONE")
